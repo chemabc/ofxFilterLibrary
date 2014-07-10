@@ -30,6 +30,13 @@ void ToonFilter::onKeyPressed(int key) {
     updateParameter("quantizationLevels", _quantizationLevels);
     updateParameter("threshold", _threshold);
 }
+void ToonFilter::onMousePressed(int button){
+  if (_quantizationLevels<0) _quantizationLevels = 0;
+  if (_threshold<0) _threshold = 0;
+  updateParameter("quantizationLevels", _quantizationLevels);
+  updateParameter("threshold", _threshold);
+}
+
 
 string ToonFilter::_getFragSrc() {
     return GLSL_STRING(120,
@@ -55,7 +62,7 @@ string ToonFilter::_getFragSrc() {
         void main() {
             vec2 textureCoordinate = gl_TexCoord[0].xy;
             vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-            
+
             float bottomLeftIntensity = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;
             float topRightIntensity = texture2D(inputImageTexture, topRightTextureCoordinate).r;
             float topLeftIntensity = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
@@ -66,13 +73,13 @@ string ToonFilter::_getFragSrc() {
             float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;
             float h = -topLeftIntensity - 2.0 * topIntensity - topRightIntensity + bottomLeftIntensity + 2.0 * bottomIntensity + bottomRightIntensity;
             float v = -bottomLeftIntensity - 2.0 * leftIntensity - topLeftIntensity + bottomRightIntensity + 2.0 * rightIntensity + topRightIntensity;
-            
+
             float mag = length(vec2(h, v));
-            
+
             vec3 posterizedImageColor = floor((textureColor.rgb * quantizationLevels) + 0.5) / quantizationLevels;
-            
+
             float thresholdTest = 1.0 - step(threshold, mag);
-            
+
             gl_FragColor = vec4(posterizedImageColor * thresholdTest, textureColor.a);
         }
     );
@@ -96,24 +103,67 @@ string ToonFilter::_getVertSrc() {
         void main() {
             gl_TexCoord[0] = gl_MultiTexCoord0;
             gl_Position = ftransform();
-            
+
             vec2 widthStep = vec2(texelWidth, 0.0);
             vec2 heightStep = vec2(0.0, texelHeight);
             vec2 widthHeightStep = vec2(texelWidth, texelHeight);
             vec2 widthNegativeHeightStep = vec2(texelWidth, -texelHeight);
-            
+
             //textureCoordinate = inputTextureCoordinate.xy;
             vec2 textureCoordinate = vec2(gl_MultiTexCoord0);
             leftTextureCoordinate = textureCoordinate - widthStep;
             rightTextureCoordinate = textureCoordinate + widthStep;
-            
+
             topTextureCoordinate = textureCoordinate - heightStep;
             topLeftTextureCoordinate = textureCoordinate - widthHeightStep;
             topRightTextureCoordinate = textureCoordinate + widthNegativeHeightStep;
-            
+
             bottomTextureCoordinate = textureCoordinate + heightStep;
             bottomLeftTextureCoordinate = textureCoordinate - widthNegativeHeightStep;
             bottomRightTextureCoordinate = textureCoordinate + widthHeightStep;
         }
     );
 }
+
+#ifdef _APPGC_OFXSIMPLEGUITOO
+/****************************************************
+        ofxSimpleGuiToo GUI
+****************************************************/
+string ToonFilter::getTotalHelpString() {
+    string sComplete= "Kuwahara: " + s_userGuiPage + " ";
+    sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
+    sComplete += " _threshold: " + ofToString(_threshold) + "; " ;
+    sComplete += " _quantizationLevels: " + ofToString(_quantizationLevels) + "; " ;
+    return sComplete;
+}
+void ToonFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUsePageNameAsATitle, bool bLoadSettings){
+     ptr_gui = gui;
+    s_userGuiPage=_name+"_"+ofToString(i_ID);
+    if(ptr_gui!=0){
+        if(userGuiPage == ""){
+
+            if(bUsePageNameAsATitle){
+                ptr_gui->addTitle(s_userGuiPage);
+            }
+            else{
+                ptr_gui->addPage(s_userGuiPage);
+            }
+        }else{
+            if(bUsePageNameAsATitle){
+                ptr_gui->addTitle(userGuiPage);
+            }
+            else{
+                ptr_gui->setPage(userGuiPage);
+                ptr_gui->addTitle(s_userGuiPage);
+            }
+        }
+        ptr_gui->addToggle("_b_activeFilter_"+ofToString(i_ID), _b_activeFilter);
+        ptr_gui->addSlider("_threshold_"+ofToString(i_ID), _threshold, 0, 4.0);
+        ptr_gui->addSlider("_quantizationLevels_"+ofToString(i_ID), _quantizationLevels, 0, 50.0);
+
+
+        if(bLoadSettings) ptr_gui->loadFromXML();
+    }
+
+}
+#endif

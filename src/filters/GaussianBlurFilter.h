@@ -17,11 +17,16 @@ public:
 	virtual ~GaussianBlurFilter();
 
     virtual void    onKeyPressed(int key);
-    
-    virtual string  getInstructions() { return "Left and Right change blur size: " + ofToString(_blurSize) + "\nUp and Down change bloom: " + ofToString(_bloom); }
-    
+     virtual void    onMousePressed(int button);
 
-    
+    virtual string  getInstructions() { return "Left and Right change blur size: " + ofToString(_blurSize) + "\nUp and Down change bloom: " + ofToString(_bloom); }
+
+#ifdef _APPGC_OFXSIMPLEGUITOO
+    virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
+//    virtual void updateParameters();
+virtual string getTotalHelpString();
+	#endif
+
 protected:
     virtual string  _getVertSrc();
     virtual string  _getFragSrc();

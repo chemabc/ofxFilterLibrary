@@ -16,7 +16,10 @@ public:
 	LookupFilter(float width, float height, string lookupImageUrl);
 	virtual ~LookupFilter();
 
-    
+     #ifdef _APPGC_OFXSIMPLEGUITOO
+     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
+     virtual string getTotalHelpString();
+     #endif
 protected:
     ofTexture       _lookupTexture;
     virtual string  _getFragSrc();

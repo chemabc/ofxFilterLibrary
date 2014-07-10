@@ -36,10 +36,10 @@ string TiltShiftFilter::_getFragSrc() {
             vec2 uv = gl_TexCoord[0].xy;
             vec4 sharpImageColor = texture2D(inputImageTexture, uv);
             vec4 blurredImageColor = texture2D(inputImageTexture2, uv);
-            
+
             float blurIntensity = 1.0 - smoothstep(topFocusLevel - focusFallOffRate, topFocusLevel, uv.y);
             blurIntensity += smoothstep(bottomFocusLevel, bottomFocusLevel + focusFallOffRate, uv.y);
-            
+
             gl_FragColor = mix(sharpImageColor, blurredImageColor, blurIntensity);
         }
     );
@@ -53,7 +53,10 @@ void TiltShiftFilter::onKeyPressed(int key) {
     updateParameter("topFocusLevel", _focusPercent);
     updateParameter("bottomFocusLevel", 1.f - _focusPercent);
 }
-
+void TiltShiftFilter::onMousePressed(int button) {
+    updateParameter("topFocusLevel", _focusPercent);
+    updateParameter("bottomFocusLevel", 1.f - _focusPercent);
+}
 void TiltShiftFilter::begin() {
     _gaussianBlurFilter->begin();
     _texture.draw(0, 0);
@@ -66,3 +69,43 @@ void TiltShiftFilter::describeParameters() {
     AbstractFilter::describeParameters();
     _gaussianBlurFilter->describeParameters();
 }
+#ifdef _APPGC_OFXSIMPLEGUITOO
+/****************************************************
+        ofxSimpleGuiToo GUI
+****************************************************/
+string TiltShiftFilter::getTotalHelpString() {
+    string sComplete= "TiltShift: " + s_userGuiPage + " ";
+    sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
+    sComplete += " _focusPercent: " + ofToString(_focusPercent) + "; ";
+    return sComplete;
+}
+void TiltShiftFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUsePageNameAsATitle, bool bLoadSettings){
+     ptr_gui = gui;
+    s_userGuiPage=_name+"_"+ofToString(i_ID);
+    if(ptr_gui!=0){
+        if(userGuiPage == ""){
+
+            if(bUsePageNameAsATitle){
+                ptr_gui->addTitle(s_userGuiPage);
+            }
+            else{
+                ptr_gui->addPage(s_userGuiPage);
+            }
+        }else{
+            if(bUsePageNameAsATitle){
+                ptr_gui->addTitle(userGuiPage);
+            }
+            else{
+                ptr_gui->setPage(userGuiPage);
+                ptr_gui->addTitle(s_userGuiPage);
+            }
+        }
+        ptr_gui->addToggle("_b_activeFilter_"+ofToString(i_ID), _b_activeFilter);
+        ptr_gui->addSlider("_focusPercent"+ofToString(i_ID), _focusPercent, 0, 10.0);
+
+
+        if(bLoadSettings) ptr_gui->loadFromXML();
+    }
+
+}
+#endif

@@ -16,6 +16,12 @@ public:
 	VignetteFilter();
 	virtual ~VignetteFilter();
 
+	 #ifdef _APPGC_OFXSIMPLEGUITOO
+    virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
+//    virtual void updateParameters();
+virtual string getTotalHelpString();
+	#endif
+
 protected:
     virtual string  _getFragSrc();
 };

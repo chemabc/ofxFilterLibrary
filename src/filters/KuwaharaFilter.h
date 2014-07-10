@@ -14,11 +14,19 @@
 class KuwaharaFilter : public AbstractFilter {
 public:
 	KuwaharaFilter(int radius=7);
+
 	virtual ~KuwaharaFilter();
 
     virtual void    onKeyPressed(int key);
+    virtual void    onMousePressed(int button);
     virtual string  getInstructions() { return "Up and Down change radius ("+ofToString(_radius)+")"; }
-    
+
+    #ifdef _APPGC_OFXSIMPLEGUITOO
+    virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
+//    virtual void updateParameters();
+virtual string getTotalHelpString();
+	#endif
+
 protected:
     virtual string  _getFragSrc();
     int             _radius;

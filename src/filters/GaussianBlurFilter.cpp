@@ -30,6 +30,12 @@ void GaussianBlurFilter::onKeyPressed(int key) {
     updateParameter("blurSize", _blurSize);
     updateParameter("bloom", _bloom);
 }
+void GaussianBlurFilter::onMousePressed(int button){
+    if (_blurSize<0) _blurSize = 0;
+    if (_bloom<0) _bloom = 0;
+    updateParameter("blurSize", _blurSize);
+    updateParameter("bloom", _bloom);
+}
 
 string GaussianBlurFilter::_getVertSrc() {
     return AbstractFilter::_getVertSrc();
@@ -60,9 +66,50 @@ string GaussianBlurFilter::_getFragSrc() {
             sum += texture2D(texture0, vec2(x + i * texelWidthOffset * r, y + i * texelHeightOffset * r)) * v * t;
             sum += texture2D(texture0, vec2(x - i * texelWidthOffset * r, y - i * texelHeightOffset * r)) * v * t;
         }
-        
+
         gl_FragColor = sum;
-        
+
     }
     );
 }
+#ifdef _APPGC_OFXSIMPLEGUITOO
+/****************************************************
+        ofxSimpleGuiToo GUI
+****************************************************/
+string GaussianBlurFilter::getTotalHelpString() {
+    string sComplete= "Gaussian: " + s_userGuiPage + " ";
+    sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
+    sComplete += " _blurSize: " + ofToString(_blurSize) + "; ";
+    sComplete += " _bloom: " + ofToString(_bloom) + "; ";
+    return sComplete;
+}
+void GaussianBlurFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUsePageNameAsATitle, bool bLoadSettings){
+     ptr_gui = gui;
+    s_userGuiPage=_name+"_"+ofToString(i_ID);
+    if(ptr_gui!=0){
+        if(userGuiPage == ""){
+
+            if(bUsePageNameAsATitle){
+                ptr_gui->addTitle(s_userGuiPage);
+            }
+            else{
+                ptr_gui->addPage(s_userGuiPage);
+            }
+        }else{
+            if(bUsePageNameAsATitle){
+                ptr_gui->addTitle(userGuiPage);
+            }
+            else{
+                ptr_gui->setPage(userGuiPage);
+                ptr_gui->addTitle(s_userGuiPage);
+            }
+        }
+         ptr_gui->addToggle("_b_activeFilter_"+ofToString(i_ID), _b_activeFilter);
+        ptr_gui->addSlider("_blurSize"+ofToString(i_ID), _blurSize, 0, 100.0);
+        ptr_gui->addSlider("_bloom"+ofToString(i_ID), _bloom, 0, 100.0);
+
+        if(bLoadSettings) ptr_gui->loadFromXML();
+    }
+
+}
+#endif

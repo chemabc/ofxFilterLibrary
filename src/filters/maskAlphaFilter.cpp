@@ -1,34 +1,45 @@
 //
-//  GrayscaleFilter.cpp
+//  maskAlphaFilter.cpp
 //  ofxFilterLibraryExample
 //
 //  Created by Matthew Fargo on 2014/06/27.
 //
 //
 
-#include "GrayscaleFilter.h"
+#include "maskAlphaFilter.h"
 
-GrayscaleFilter::GrayscaleFilter() : AbstractFilter() {
-    _name = "Grayscale";
+maskAlphaFilter::maskAlphaFilter() : AbstractFilter() {
+    _name = "maskAlpha";
     _setupShader();
 }
 
-GrayscaleFilter::~GrayscaleFilter() {}
+maskAlphaFilter::~maskAlphaFilter() {}
 
 
-string GrayscaleFilter::_getFragSrc() {
+string maskAlphaFilter::_getFragSrc() {
     return GLSL_STRING(120,
+//        "#extension GL_ARB_texture_rectangle : enable
+//        #extension GL_EXT_gpu-shader4 : enable"
         uniform sampler2D inputImageTexture;
-
-        const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+       // uniform sampler2D inputImageTexture1; //mask con alpha
 
         void main() {
             vec2 textureCoordinate = gl_TexCoord[0].xy;
-
+         //   vec2 textureCoordinate2 = gl_TexCoord[1].xy;
             vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-            float luminance = dot(textureColor.rgb, W);
-
-            gl_FragColor = vec4(vec3(luminance), textureColor.a);
+           // vec4 textureColor2 = texture2D(inputImageTexture1, textureCoordinate2);
+//            vec4 finalColor;
+//            finalColor.rgb = textureColor.rgb;
+////           finalColor.r = 1.0;
+////            finalColor.g = 0.0;
+////            finalColor.b = 0.0;
+////
+//            finalColor.a = 1.0;
+            if(textureColor.a <=0.0){
+                textureColor.r =1.0;
+                textureColor.a =1.0;
+            }
+            gl_FragColor =textureColor;
         }
     );
 }
@@ -38,12 +49,10 @@ string GrayscaleFilter::_getFragSrc() {
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
-string GrayscaleFilter::getTotalHelpString() {
-    string sComplete= "GreyScale: " + s_userGuiPage + " ";
-    sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
-    return sComplete;
-}
-void GrayscaleFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUsePageNameAsATitle, bool bLoadSettings){
+//void maskAlphaFilter::updateParameters(){
+//
+//}
+void maskAlphaFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUsePageNameAsATitle, bool bLoadSettings){
     ptr_gui = gui;
     s_userGuiPage=_name+"_"+ofToString(i_ID);
     if(ptr_gui!=0){
@@ -64,7 +73,7 @@ void GrayscaleFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bU
                 ptr_gui->addTitle(s_userGuiPage);
             }
         }
-        ptr_gui->addToggle("_b_activeFilter_"+ofToString(i_ID), _b_activeFilter);
+
         if(bLoadSettings) ptr_gui->loadFromXML();
     }
 

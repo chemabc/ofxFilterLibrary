@@ -17,17 +17,25 @@ public:
 	virtual ~BilateralFilter();
 
     virtual void    onKeyPressed(int key);
+    virtual void    onMousePressed(int button);
     virtual string  getInstructions() { return "Up and Down change blur offset: " + ofToString(_texelSpacing.x) + "\nLeft and Right to change normalization: " + ofToString(_normalization); }
 
-    
+
     float           getBlurOffset() { return _texelSpacing.x; }
     void            setBlurOffset(float blurOffset) { _texelSpacing = ofVec2f(blurOffset, blurOffset); }
-    
+
+     #ifdef _APPGC_OFXSIMPLEGUITOO
+    virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
+//    virtual void updateParameters();
+virtual string getTotalHelpString();
+	#endif
+
 protected:
     virtual string  _getFragSrc();
     virtual string  _getVertSrc();
-    
+
     float           _normalization;
+    float _blurOffset; //chema
 
 };
 

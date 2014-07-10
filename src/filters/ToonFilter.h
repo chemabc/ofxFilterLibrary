@@ -17,10 +17,15 @@ public:
 	virtual ~ToonFilter();
 
     virtual void    onKeyPressed(int key);
+    virtual void    onMousePressed(int button);
     virtual string  getInstructions() {
         return "Left and Right change threshold: " + ofToString(_threshold) + "\nUp and Down change quantization: " + ofToString(_quantizationLevels);
     }
-    
+      #ifdef _APPGC_OFXSIMPLEGUITOO
+    virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
+//    virtual void updateParameters();
+virtual string getTotalHelpString();
+	#endif
 protected:
     virtual string  _getVertSrc();
     virtual string  _getFragSrc();

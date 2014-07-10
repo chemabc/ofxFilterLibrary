@@ -10,6 +10,9 @@
 #define filterSandbox_ofxFilterLibrary_h
 
 
+//#include "defines_main.h"
+
+
 #include "TiltShiftFilter.h"
 #include "KuwaharaFilter.h"
 #include "ToonFilter.h"
@@ -30,6 +33,9 @@
 #include "LowPassFilter.h"
 #include "AverageColorFilter.h"
 #include "MotionDetectionFilter.h"
+#include "maskAlphaFilter.h"
+#include "ThresholdFilter.h"
+#include "PosterizeFilter.h"
 
 #include "FilterChain.h"
 
