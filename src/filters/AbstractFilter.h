@@ -37,6 +37,7 @@ public:
     virtual void    setHeight(float height) { _height = height; }
     virtual string  getInstructions() { return ""; }
     ofShader &      getShader() { return _shader; }
+    virtual void updateParameters(){};
 
     #ifdef _APPGC_OFXSIMPLEGUITOO
     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
@@ -44,6 +45,7 @@ public:
     virtual string getTotalHelpString() {return "";};
     bool isActive(){return _b_activeFilter;};
     void setActive(bool b){_b_activeFilter=b;};
+
     #endif
 
 protected:

@@ -12,9 +12,11 @@
 ThresholdFilter::ThresholdFilter(float width, float height, float threshold) : AbstractFilter() {
     _name = "Threshold";
     _threshold = threshold;
-//    _sharp = false;
+    _sharp = 0;
+    _invert = 0;
     _addParameter(new ParameterF("threshold", _threshold));
-   // _addParameter(new ParameterF("sharp", _sharp));
+    _addParameter(new ParameterI("sharp", _sharp));
+    _addParameter(new ParameterI("invert", _invert));
     _setupShader();
 }
 ThresholdFilter::~ThresholdFilter() {}
@@ -23,16 +25,11 @@ ThresholdFilter::~ThresholdFilter() {}
 void ThresholdFilter::onKeyPressed(int key) {
     if (key==OF_KEY_LEFT) _threshold--;
     else if (key==OF_KEY_RIGHT) _threshold++;
-
-    if (_threshold<0) _threshold = 0;
-    updateParameter("threshold", _threshold);
-//    updateParameter("sharp", _sharp);
+    updateParameters();
 
 }
 void ThresholdFilter::onMousePressed(int button){
-    if (_threshold<0) _threshold = 0;
-    updateParameter("threshold", _threshold);
-//    updateParameter("sharp", _sharp);
+    updateParameters();
 }
 
 string ThresholdFilter::_getVertSrc() {
@@ -43,7 +40,8 @@ string ThresholdFilter::_getFragSrc() {
     return GLSL_STRING(120,
         uniform sampler2D inputImageTexture;
          uniform float threshold;
-         uniform bool sharp;
+         uniform int sharp;
+         uniform int invert;
         const vec3 W = vec3(0.2125, 0.7154, 0.0721);
     void main(){
             //Change into grayscale
@@ -52,10 +50,18 @@ string ThresholdFilter::_getFragSrc() {
             vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
             float luminance = dot(textureColor.rgb, W);
 
-
-            if(luminance >= threshold){
-                luminance = 1.0;
-            } else luminance = 0.0;
+            if(invert==0){
+                //Non-invert: black -> black, white ->white
+                if(luminance >= threshold){
+                    if(sharp == 0) luminance = luminance;
+                    else luminance = 1.0;
+                } else luminance = 0.0;
+            }else{
+                if(luminance >= threshold){
+                    if(sharp == 0) luminance = 1.0-luminance;
+                    else luminance = 0.0;
+                } else luminance = 1.0;
+            }
 
             gl_FragColor = vec4(vec3(luminance), textureColor.a);
 
@@ -63,14 +69,28 @@ string ThresholdFilter::_getFragSrc() {
     }
     );
 }
+
+void ThresholdFilter::updateParameters(){
+    if (_threshold<0) _threshold = 0;
+    if (_threshold>1) _threshold = 1;
+    if (_sharp<0) _sharp = 0;
+    if (_sharp>1) _sharp = 1;
+    if (_invert<0) _invert = 0;
+    if (_invert>1) _invert = 1;
+    updateParameter("threshold", _threshold);
+    updateParameter("sharp", _sharp);
+    updateParameter("invert", _invert);
+}
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
+
 string ThresholdFilter::getTotalHelpString() {
-    string sComplete= "Gaussian: " + s_userGuiPage + " ";
+    string sComplete= "Threshold: " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
-//    sComplete += " _sharp: " + ofToString(_sharp) + "; ";
+    sComplete += " _sharp: " + ofToString(_sharp) + "; ";
+    sComplete += " _invert: " + ofToString(_invert) + "; ";
     sComplete += " _threshold: " + ofToString(_threshold) + "; ";
     return sComplete;
 }
@@ -96,11 +116,15 @@ void ThresholdFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bU
             }
         }
         ptr_gui->addToggle("_b_activeFilter_"+ofToString(i_ID), _b_activeFilter);
-//        ptr_gui->addToggle("_sharp"+ofToString(i_ID), _sharp);
+        ptr_gui->addSlider("_sharp"+ofToString(i_ID), _sharp, 0, 1);
+        ptr_gui->addSlider("_invert"+ofToString(i_ID), _invert, 0, 1);
         ptr_gui->addSlider("_threshold"+ofToString(i_ID), _threshold, 0.0, 1.0);
 
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings){
+            ptr_gui->loadFromXML();
+            updateParameters();
+        }
     }
 
 }

@@ -21,18 +21,21 @@ public:
     virtual void    onMousePressed(int button);
 
     virtual string  getInstructions() { return "Left and Right change threshold size: " + ofToString(_threshold); }
+     virtual void updateParameters();
 
-#ifdef _APPGC_OFXSIMPLEGUITOO
+    #ifdef _APPGC_OFXSIMPLEGUITOO
     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
-//    virtual void updateParameters();
-virtual string getTotalHelpString();
+
+    virtual string getTotalHelpString();
+
 	#endif
 
 protected:
     virtual string  _getVertSrc();
     virtual string  _getFragSrc();
     float           _threshold;
-//    bool            _sharp;
+    int            _sharp;
+    int            _invert;
 
 
 };

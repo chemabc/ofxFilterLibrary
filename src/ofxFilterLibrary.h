@@ -36,6 +36,9 @@
 #include "maskAlphaFilter.h"
 #include "ThresholdFilter.h"
 #include "PosterizeFilter.h"
+#include "ThresholdRGBAFilter.h"
+#include "DuoToneFilter.h"
+#include "HSVControlFilter.h"
 
 #include "FilterChain.h"
 
