@@ -17,6 +17,9 @@ FilterChain::~FilterChain() {}
 
 
 void FilterChain::begin() {
+    #ifdef _APPGC_OFXSIMPLEGUITOO
+    if(_b_activeFilter){
+    #endif;
     if (_filters.size()<1) return;
     #ifdef _APPGC_OFXSIMPLEGUITOO
 //    cout << "[FilterChain::end] Ping begin index 0 ("<< _filters[0]->isActive()<<"): " <<i_shitToDebug << endl;
@@ -24,11 +27,17 @@ void FilterChain::begin() {
     _ping.begin();
     ofClear(0, 0, 0, 0);
     _filters[0]->begin();
+    #ifdef _APPGC_OFXSIMPLEGUITOO
+    }
+    #endif;
 
 
 }
 
 void FilterChain::end() {
+    #ifdef _APPGC_OFXSIMPLEGUITOO
+    if(_b_activeFilter){
+    #endif;
     _filters[0]->end();
     _ping.end();
     #ifdef _APPGC_OFXSIMPLEGUITOO
@@ -57,6 +66,9 @@ void FilterChain::end() {
 
 
     i_shitToDebug++;
+    #ifdef _APPGC_OFXSIMPLEGUITOO
+    }
+    #endif;
 
 }
 
@@ -84,31 +96,34 @@ void FilterChain::onMousePressed(int button){
         ofxSimpleGuiToo GUI
 ****************************************************/
 void FilterChain::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUsePageNameAsATitle, bool bLoadSettings){
-    ptr_gui = gui;
-    s_userGuiPage=_name+"_"+ofToString(i_ID);
-    if(ptr_gui!=0){
-        if(userGuiPage == ""){
-
-            if(bUsePageNameAsATitle){
-                //ptr_gui->addTitle(s_userGuiPage, true);
-                ptr_gui->addTitle(s_userGuiPage);
-            }
-            else{
-                ptr_gui->addPage(s_userGuiPage);
-            }
-        }else{
-            if(bUsePageNameAsATitle){
-                //ptr_gui->addTitle(userGuiPage, true);
-                ptr_gui->addTitle(userGuiPage);
-            }
-            else{
-                ptr_gui->setPage(userGuiPage);
-                //ptr_gui->addTitle(s_userGuiPage, true);
-                ptr_gui->addTitle(s_userGuiPage);
-            }
-        }
-
-        if(bLoadSettings) ptr_gui->loadFromXML();
-    }
+    AbstractFilter::setupGui(gui, userGuiPage, bUsePageNameAsATitle, bLoadSettings);
+//    ptr_gui = gui;
+//    s_userGuiPage=_name+"_"+ofToString(i_ID);
+//    if(ptr_gui!=0){
+//        if(userGuiPage == ""){
+//
+//            if(bUsePageNameAsATitle){
+//                //ptr_gui->addTitle(s_userGuiPage, true);
+//                ptr_gui->addTitle(s_userGuiPage);
+//            }
+//            else{
+//                ptr_gui->addPage(s_userGuiPage);
+//            }
+//        }else{
+//            if(bUsePageNameAsATitle){
+//                //ptr_gui->addTitle(userGuiPage, true);
+//                ptr_gui->addTitle(userGuiPage);
+//            }
+//            else{
+//                ptr_gui->setPage(userGuiPage);
+//                //ptr_gui->addTitle(s_userGuiPage, true);
+//                ptr_gui->addTitle(s_userGuiPage);
+//            }
+//        }
+//
+//        if(bLoadSettings){
+//                ptr_gui->loadFromXML();
+//        }
+//    }
 }
 #endif

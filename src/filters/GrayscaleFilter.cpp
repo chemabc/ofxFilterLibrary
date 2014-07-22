@@ -39,7 +39,7 @@ string GrayscaleFilter::_getFragSrc() {
         ofxSimpleGuiToo GUI
 ****************************************************/
 string GrayscaleFilter::getTotalHelpString() {
-    string sComplete= "GreyScale: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     return sComplete;
 }

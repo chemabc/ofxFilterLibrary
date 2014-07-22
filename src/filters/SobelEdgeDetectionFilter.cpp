@@ -21,20 +21,14 @@ SobelEdgeDetectionFilter::SobelEdgeDetectionFilter(float width, float height, fl
 SobelEdgeDetectionFilter::~SobelEdgeDetectionFilter() {}
 
 void SobelEdgeDetectionFilter::onKeyPressed(int key) {
-    if (key==OF_KEY_LEFT) _edgeStrength-=0.1f;
-    else if (key==OF_KEY_RIGHT) _edgeStrength+=0.1f;
-    if (key==OF_KEY_DOWN) _threshold-=0.1f;
-    else if (key==OF_KEY_UP) _threshold+=0.1f;
-    if (_edgeStrength<0) _edgeStrength=0;
-    if (_threshold<0) _threshold=0;
-    updateParameter("edgeStrength", _edgeStrength);
-    updateParameter("threshold", _threshold);
+//    if (key==OF_KEY_LEFT) _edgeStrength-=0.1f;
+//    else if (key==OF_KEY_RIGHT) _edgeStrength+=0.1f;
+//    if (key==OF_KEY_DOWN) _threshold-=0.1f;
+//    else if (key==OF_KEY_UP) _threshold+=0.1f;
+    updateParameters();
 }
 void SobelEdgeDetectionFilter::onMousePressed(int button){
-    if (_edgeStrength<0) _edgeStrength=0;
-    if (_threshold<0) _threshold=0;
-    updateParameter("edgeStrength", _edgeStrength);
-    updateParameter("threshold", _threshold);
+   updateParameters();
 }
 
 string SobelEdgeDetectionFilter::_getFragSrc() {
@@ -120,13 +114,20 @@ string SobelEdgeDetectionFilter::_getVertSrc() {
          }
     );
 }
+
+void SobelEdgeDetectionFilter::updateParameters(){
+   if (_edgeStrength<0) _edgeStrength=0;
+    if (_threshold<0) _threshold=0;
+    updateParameter("edgeStrength", _edgeStrength);
+    updateParameter("threshold", _threshold);
+}
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
 
 string SobelEdgeDetectionFilter::getTotalHelpString() {
-    string sComplete= "Sobel: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _edgeStrength: " + ofToString(_edgeStrength) + "; " ;
     sComplete += " _threshold: " + ofToString(_threshold) + "; " ;
@@ -159,7 +160,10 @@ void SobelEdgeDetectionFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage
         ptr_gui->addSlider("_threshold", _threshold, 0.0, 1.0);
 
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings) {
+            ptr_gui->loadFromXML();
+            updateParameters();
+        }
     }
 
 }

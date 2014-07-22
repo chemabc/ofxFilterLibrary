@@ -39,6 +39,8 @@
 #include "ThresholdRGBAFilter.h"
 #include "DuoToneFilter.h"
 #include "HSVControlFilter.h"
+#include "HSVControlFilter.h"
+#include "ThresholdAndToneFilter.h"
 
 #include "FilterChain.h"
 

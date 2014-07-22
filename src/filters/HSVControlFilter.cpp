@@ -2,8 +2,8 @@
 //  HSVControlFilter.cpp
 //  filterSandbox
 //
-//  Created by Matthew Fargo on 2014/06/23.
-//
+//  Created by Chema Blanco 2014/07/11
+//  Based on Matthew Fargo on 2014/06/23.
 //
 
 #include "HSVControlFilter.h"
@@ -87,7 +87,7 @@ void HSVControlFilter::updateParameters(){
         ofxSimpleGuiToo GUI
 ****************************************************/
 string HSVControlFilter::getTotalHelpString() {
-    string sComplete= "HSV_Control: " + s_userGuiPage + " ";
+   string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _hue: " + ofToString(_hue) + "; ";
     sComplete += " _saturation: " + ofToString(_saturation) + "; ";

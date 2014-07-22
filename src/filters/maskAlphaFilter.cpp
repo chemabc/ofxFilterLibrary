@@ -2,8 +2,9 @@
 //  maskAlphaFilter.cpp
 //  ofxFilterLibraryExample
 //
-//  Created by Matthew Fargo on 2014/06/27.
-//
+//  Created by Chema Blanco 2014/07/11
+//  Based on Matthew Fargo on 2014/06/23.
+// NON WORKING YET!!
 //
 
 #include "maskAlphaFilter.h"

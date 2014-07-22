@@ -18,23 +18,16 @@ BilateralFilter::~BilateralFilter() {}
 
 
 void BilateralFilter::onKeyPressed(int key) {
-    float blurOffset = _texelSpacing.x;
-    if (key==OF_KEY_DOWN) blurOffset -= 0.5f;
-    else if (key==OF_KEY_UP) blurOffset += 0.5f;
-    else if (key==OF_KEY_LEFT) _normalization -=0.5;
-    else if (key==OF_KEY_RIGHT) _normalization += 0.5;
-    if (blurOffset<0) blurOffset = 0;
-    _blurOffset = blurOffset;
-    if (_normalization<0) _normalization = 0;
-    updateParameter("distanceNormalizationFactor", _normalization);
-    _texelSpacing = ofVec2f(blurOffset, blurOffset);
+//    float blurOffset = _texelSpacing.x;
+//    if (key==OF_KEY_DOWN) blurOffset -= 0.5f;
+//    else if (key==OF_KEY_UP) blurOffset += 0.5f;
+//    else if (key==OF_KEY_LEFT) _normalization -=0.5;
+//    else if (key==OF_KEY_RIGHT) _normalization += 0.5;
+    updateParameters();
 }
 void BilateralFilter::onMousePressed(int button){
+    updateParameters();
 
-    if (_blurOffset<0) _blurOffset = 0;
-    if (_normalization<0) _normalization = 0;
-    updateParameter("distanceNormalizationFactor", _normalization);
-    _texelSpacing = ofVec2f(_blurOffset, _blurOffset);
 }
 string BilateralFilter::_getFragSrc() {
     return GLSL_STRING(120,
@@ -139,14 +132,19 @@ string BilateralFilter::_getVertSrc() {
         }
     );
 }
-
+void BilateralFilter::updateParameters(){
+    if (_blurOffset<0) _blurOffset = 0;
+    if (_normalization<0) _normalization = 0;
+    updateParameter("distanceNormalizationFactor", _normalization);
+    _texelSpacing = ofVec2f(_blurOffset, _blurOffset);
+}
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
 
 string BilateralFilter::getTotalHelpString() {
-    string sComplete= "Bilateral: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _blurOffset: " + ofToString(_texelSpacing.x) + "; " ;
     sComplete += " _normalization: " + ofToString(_normalization) + "; " ;
@@ -177,7 +175,10 @@ void BilateralFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bU
         ptr_gui->addSlider("_blurOffset", _blurOffset, 0, 20.0);
         ptr_gui->addSlider("_normalization", _normalization, 0.0, 20.0);
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings) {
+                ptr_gui->loadFromXML();
+                updateParameters();
+        }
     }
 
 }

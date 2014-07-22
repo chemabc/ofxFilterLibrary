@@ -21,20 +21,14 @@ GaussianBlurFilter::~GaussianBlurFilter() {}
 
 
 void GaussianBlurFilter::onKeyPressed(int key) {
-    if (key==OF_KEY_LEFT) _blurSize--;
-    else if (key==OF_KEY_RIGHT) _blurSize++;
-    else if (key==OF_KEY_UP) _bloom += 0.1;
-    else if (key==OF_KEY_DOWN) _bloom -= 0.1;
-    if (_blurSize<0) _blurSize = 0;
-    if (_bloom<0) _bloom = 0;
-    updateParameter("blurSize", _blurSize);
-    updateParameter("bloom", _bloom);
+//    if (key==OF_KEY_LEFT) _blurSize--;
+//    else if (key==OF_KEY_RIGHT) _blurSize++;
+//    else if (key==OF_KEY_UP) _bloom += 0.1;
+//    else if (key==OF_KEY_DOWN) _bloom -= 0.1;
+   updateParameters();
 }
 void GaussianBlurFilter::onMousePressed(int button){
-    if (_blurSize<0) _blurSize = 0;
-    if (_bloom<0) _bloom = 0;
-    updateParameter("blurSize", _blurSize);
-    updateParameter("bloom", _bloom);
+   updateParameters();
 }
 
 string GaussianBlurFilter::_getVertSrc() {
@@ -72,12 +66,19 @@ string GaussianBlurFilter::_getFragSrc() {
     }
     );
 }
+
+void GaussianBlurFilter::updateParameters(){
+    if (_blurSize<0) _blurSize = 0;
+    if (_bloom<0) _bloom = 0;
+    updateParameter("blurSize", _blurSize);
+    updateParameter("bloom", _bloom);
+}
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
 string GaussianBlurFilter::getTotalHelpString() {
-    string sComplete= "Gaussian: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _blurSize: " + ofToString(_blurSize) + "; ";
     sComplete += " _bloom: " + ofToString(_bloom) + "; ";
@@ -108,7 +109,10 @@ void GaussianBlurFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool
         ptr_gui->addSlider("_blurSize"+ofToString(i_ID), _blurSize, 0, 100.0);
         ptr_gui->addSlider("_bloom"+ofToString(i_ID), _bloom, 0, 100.0);
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings) {
+            ptr_gui->loadFromXML();
+            updateParameters();
+        }
     }
 
 }

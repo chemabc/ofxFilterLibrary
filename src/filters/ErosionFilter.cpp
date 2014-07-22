@@ -294,7 +294,7 @@ string ErosionFilter::_getFragSrcForRadius(int radius) {
         ofxSimpleGuiToo GUI
 ****************************************************/
 string ErosionFilter::getTotalHelpString() {
-    string sComplete= "Erosion: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " f_erosionRadius: " + ofToString(f_erosionRadius) + "; ";
     return sComplete;

@@ -21,6 +21,8 @@ public:
 
     virtual string  getInstructions() { return "Left and Right change blur size: " + ofToString(_blurSize) + "\nUp and Down change bloom: " + ofToString(_bloom); }
 
+    virtual void updateParameters();
+
 #ifdef _APPGC_OFXSIMPLEGUITOO
     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
 //    virtual void updateParameters();

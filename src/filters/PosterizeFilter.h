@@ -20,6 +20,7 @@ public:
     virtual void    onMousePressed(int button);
 
     virtual string  getInstructions() { return "Left and Right change gamma: " + ofToString(_gamma) + "\nUp and Down change num colors: " + ofToString(_numColors); }
+    virtual void updateParameters();
 
 #ifdef _APPGC_OFXSIMPLEGUITOO
     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);

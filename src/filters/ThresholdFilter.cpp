@@ -2,7 +2,9 @@
 //  ThresholdFilter.cpp
 //  filterSandbox
 //
-//  Created by Matthew Fargo on 2014/06/23.
+//  Created by Chema Blanco 2014/07/11
+//  Based on Matthew Fargo on 2014/06/23.
+
 //
 //
 
@@ -23,8 +25,8 @@ ThresholdFilter::~ThresholdFilter() {}
 
 
 void ThresholdFilter::onKeyPressed(int key) {
-    if (key==OF_KEY_LEFT) _threshold--;
-    else if (key==OF_KEY_RIGHT) _threshold++;
+//    if (key==OF_KEY_LEFT) _threshold--;
+//    else if (key==OF_KEY_RIGHT) _threshold++;
     updateParameters();
 
 }
@@ -87,7 +89,7 @@ void ThresholdFilter::updateParameters(){
 ****************************************************/
 
 string ThresholdFilter::getTotalHelpString() {
-    string sComplete= "Threshold: " + s_userGuiPage + " ";
+   string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _sharp: " + ofToString(_sharp) + "; ";
     sComplete += " _invert: " + ofToString(_invert) + "; ";

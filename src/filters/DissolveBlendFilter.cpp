@@ -40,24 +40,31 @@ string DissolveBlendFilter::_getFragSrc() {
     );
 }
 
-void   DissolveBlendFilter::onKeyPressed(int key){
-    updateParameter("mixturePercent", _mix);
+void DissolveBlendFilter::onKeyPressed(int key){
+    if(key==OF_KEY_UP) _mix +=0.1;
+    else if(key==OF_KEY_DOWN) _mix -=0.1;
+
+    updateParameters();
 }
-void   DissolveBlendFilter::onMousePressed(int button){
-    updateParameter("mixturePercent", _mix);
+void DissolveBlendFilter::onMousePressed(int button){
+    updateParameters();
 }
 
 void DissolveBlendFilter::setMix(float mix)  {
     _mix = mix;
-    updateParameter("mixturePercent", mix);
+    updateParameters();
 }
+void DissolveBlendFilter::updateParameters(){
+    if(_mix < 0.0) _mix=0.0;
+    updateParameter("mixturePercent", _mix);
+ }
 
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
 string DissolveBlendFilter::getTotalHelpString() {
-    string sComplete= "Dissolve: " + s_userGuiPage + " ";
+   string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _mix: " + ofToString(_mix) + "; ";
 
@@ -85,10 +92,13 @@ void DissolveBlendFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, boo
             }
         }
         ptr_gui->addToggle("_b_activeFilter_"+ofToString(i_ID), _b_activeFilter);
-        ptr_gui->addSlider("_mix"+ofToString(i_ID), _mix, 0, 255.0);
+        ptr_gui->addSlider("_mix"+ofToString(i_ID), _mix, 0.0, 1.0);
 
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings){
+                ptr_gui->loadFromXML();
+                updateParameters();
+        }
     }
 
 }

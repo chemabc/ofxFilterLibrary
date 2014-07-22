@@ -21,20 +21,14 @@ ToonFilter::ToonFilter(float width, float height, float threshold, float quantiz
 ToonFilter::~ToonFilter() {}
 
 void ToonFilter::onKeyPressed(int key) {
-    if (key==OF_KEY_UP) _quantizationLevels ++;
-    else if (key==OF_KEY_DOWN) _quantizationLevels--;
-    else if (key==OF_KEY_LEFT) _threshold-=0.1f;
-    else if (key==OF_KEY_RIGHT) _threshold+=0.1f;
-    if (_quantizationLevels<0) _quantizationLevels = 0;
-    if (_threshold<0) _threshold = 0;
-    updateParameter("quantizationLevels", _quantizationLevels);
-    updateParameter("threshold", _threshold);
+//    if (key==OF_KEY_UP) _quantizationLevels ++;
+//    else if (key==OF_KEY_DOWN) _quantizationLevels--;
+//    else if (key==OF_KEY_LEFT) _threshold-=0.1f;
+//    else if (key==OF_KEY_RIGHT) _threshold+=0.1f;
+    updateParameters();
 }
 void ToonFilter::onMousePressed(int button){
-  if (_quantizationLevels<0) _quantizationLevels = 0;
-  if (_threshold<0) _threshold = 0;
-  updateParameter("quantizationLevels", _quantizationLevels);
-  updateParameter("threshold", _threshold);
+    updateParameters();
 }
 
 
@@ -125,12 +119,19 @@ string ToonFilter::_getVertSrc() {
     );
 }
 
+void ToonFilter::updateParameters(){
+    if (_quantizationLevels<0) _quantizationLevels = 0;
+  if (_threshold<0) _threshold = 0;
+  updateParameter("quantizationLevels", _quantizationLevels);
+  updateParameter("threshold", _threshold);
+}
+
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
 string ToonFilter::getTotalHelpString() {
-    string sComplete= "Kuwahara: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _threshold: " + ofToString(_threshold) + "; " ;
     sComplete += " _quantizationLevels: " + ofToString(_quantizationLevels) + "; " ;
@@ -162,7 +163,10 @@ void ToonFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUsePag
         ptr_gui->addSlider("_quantizationLevels_"+ofToString(i_ID), _quantizationLevels, 0, 50.0);
 
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings) {
+            ptr_gui->loadFromXML();
+            updateParameters();
+        }
     }
 
 }

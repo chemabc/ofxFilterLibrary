@@ -21,6 +21,7 @@ public:
     virtual string  getInstructions() {
         return "Left and Right change threshold: " + ofToString(_threshold) + "\nUp and Down change quantization: " + ofToString(_quantizationLevels);
     }
+    virtual void updateParameters();
       #ifdef _APPGC_OFXSIMPLEGUITOO
     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
 //    virtual void updateParameters();

@@ -45,7 +45,7 @@ string VignetteFilter::_getFragSrc() {
 ****************************************************/
 
 string VignetteFilter::getTotalHelpString() {
-    string sComplete= "Vignette: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     //sComplete += " _radius: " + ofToString(_radius);
     return sComplete;

@@ -2,7 +2,8 @@
 //  ThresholdRGBAFilter.cpp
 //  filterSandbox
 //
-//  Created by Matthew Fargo on 2014/06/23.
+//  Created by Chema Blanco 2014/07/11
+//  Based on Matthew Fargo on 2014/06/23.
 //
 //
 
@@ -106,7 +107,7 @@ void ThresholdRGBAFilter::updateParameters(){
         ofxSimpleGuiToo GUI
 ****************************************************/
 string ThresholdRGBAFilter::getTotalHelpString() {
-    string sComplete= "ThresholdRGBA: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _sharp: " + ofToString(_sharp) + "; ";
     sComplete += " _invert: " + ofToString(_invert) + "; ";

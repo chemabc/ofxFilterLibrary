@@ -121,7 +121,7 @@ string ThresholdedNonMaximumSuppressionFilter::_getFragSrc() {
 ****************************************************/
 
 string ThresholdedNonMaximumSuppressionFilter::getTotalHelpString() {
-    string sComplete= "Sobel: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
 //    sComplete += " _edgeStrength: " + ofToString(_edgeStrength) + "; " ;
     return sComplete;

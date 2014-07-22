@@ -18,15 +18,12 @@ KuwaharaFilter::KuwaharaFilter(int radius) : AbstractFilter(0, 0) {
 KuwaharaFilter::~KuwaharaFilter() {}
 
 void KuwaharaFilter::onKeyPressed(int key) {
-    if (key==OF_KEY_DOWN) _radius--;
-    else if (key==OF_KEY_UP) _radius++;
-    if (_radius<0) _radius = 0;
-    updateParameter("radius", _radius);
+//    if (key==OF_KEY_DOWN) _radius--;
+//    else if (key==OF_KEY_UP) _radius++;
+    updateParameters();
 }
 void KuwaharaFilter::onMousePressed(int button){
-    if (_radius<0) _radius = 0;
-    updateParameter("radius", _radius);
-//    cout << "Parameter updated" << endl;
+    updateParameters();
 }
 
 string KuwaharaFilter::_getFragSrc() {
@@ -116,12 +113,17 @@ string KuwaharaFilter::_getFragSrc() {
         }
     );
 }
+
+void KuwaharaFilter::updateParameters(){
+     if (_radius<0) _radius = 0;
+    updateParameter("radius", _radius);
+}
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
 string KuwaharaFilter::getTotalHelpString() {
-    string sComplete= "Kuwahara: " + s_userGuiPage + " ";
+   string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _radius: " + ofToString(_radius) + "; ";
     return sComplete;
@@ -150,7 +152,10 @@ void KuwaharaFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bUs
          ptr_gui->addToggle("_b_activeFilter_"+ofToString(i_ID), _b_activeFilter);
         ptr_gui->addSlider("Radius_"+ofToString(i_ID), _radius, 0, 100);
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings){
+            ptr_gui->loadFromXML();
+            updateParameters();
+        }
     }
 
 }

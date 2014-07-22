@@ -15,10 +15,13 @@ class DissolveBlendFilter : public AbstractTwoInputFilter {
 public:
 	DissolveBlendFilter(float width, float height, float mix=0.5f);
 	virtual ~DissolveBlendFilter();
-virtual void    onKeyPressed(int key);
-     virtual void    onMousePressed(int button);
+
+    virtual void    onKeyPressed(int key);
+    virtual void    onMousePressed(int button);
+
     float           getMix() { return _mix;  }
     void            setMix(float mix);
+    virtual void updateParameters();
 #ifdef _APPGC_OFXSIMPLEGUITOO
     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
 //    virtual void updateParameters();

@@ -2,7 +2,8 @@
 //  PosterizeFilter.cpp
 //  filterSandbox
 //
-//  Created by Matthew Fargo on 2014/06/23.
+//  Created by Chema Blanco 2014/07/11
+//  Based on Matthew Fargo on 2014/06/23.
 //
 //
 
@@ -21,20 +22,14 @@ PosterizeFilter::~PosterizeFilter() {}
 
 
 void PosterizeFilter::onKeyPressed(int key) {
-    if (key==OF_KEY_LEFT) _gamma--;
-    else if (key==OF_KEY_RIGHT) _gamma++;
-    else if (key==OF_KEY_UP) _numColors += 0.1;
-    else if (key==OF_KEY_DOWN) _numColors -= 0.1;
-    if (_gamma<0) _gamma = 0;
-    if (_numColors<0) _numColors = 0;
-    updateParameter("gamma", _gamma);
-    updateParameter("numColors", _numColors);
+//    if (key==OF_KEY_LEFT) _gamma--;
+//    else if (key==OF_KEY_RIGHT) _gamma++;
+//    else if (key==OF_KEY_UP) _numColors += 0.1;
+//    else if (key==OF_KEY_DOWN) _numColors -= 0.1;
+    updateParameters();
 }
 void PosterizeFilter::onMousePressed(int button){
-    if (_gamma<0) _gamma = 0;
-    if (_numColors<0) _numColors = 0;
-    updateParameter("gamma", _gamma);
-    updateParameter("numColors", _numColors);
+  updateParameters();
 }
 
 string PosterizeFilter::_getVertSrc() {
@@ -61,12 +56,19 @@ string PosterizeFilter::_getFragSrc() {
     }
     );
 }
+
+void PosterizeFilter::updateParameters(){
+      if (_gamma<0) _gamma = 0;
+    if (_numColors<0) _numColors = 0;
+    updateParameter("gamma", _gamma);
+    updateParameter("numColors", _numColors);
+}
 #ifdef _APPGC_OFXSIMPLEGUITOO
 /****************************************************
         ofxSimpleGuiToo GUI
 ****************************************************/
 string PosterizeFilter::getTotalHelpString() {
-    string sComplete= "Gaussian: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _gamma: " + ofToString(_gamma) + "; ";
     sComplete += " _numColors: " + ofToString(_numColors) + "; ";
@@ -97,7 +99,10 @@ void PosterizeFilter::setupGui(ofxSimpleGuiToo *gui, string userGuiPage, bool bU
         ptr_gui->addSlider("_gamma"+ofToString(i_ID), _gamma, 0, 5.0);
         ptr_gui->addSlider("_numColors"+ofToString(i_ID), _numColors, 1.0, 50.0);
 
-        if(bLoadSettings) ptr_gui->loadFromXML();
+        if(bLoadSettings) {
+            ptr_gui->loadFromXML();
+            updateParameters();
+        }
     }
 
 }

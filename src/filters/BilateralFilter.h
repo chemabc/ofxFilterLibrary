@@ -19,7 +19,7 @@ public:
     virtual void    onKeyPressed(int key);
     virtual void    onMousePressed(int button);
     virtual string  getInstructions() { return "Up and Down change blur offset: " + ofToString(_texelSpacing.x) + "\nLeft and Right to change normalization: " + ofToString(_normalization); }
-
+virtual void updateParameters();
 
     float           getBlurOffset() { return _texelSpacing.x; }
     void            setBlurOffset(float blurOffset) { _texelSpacing = ofVec2f(blurOffset, blurOffset); }

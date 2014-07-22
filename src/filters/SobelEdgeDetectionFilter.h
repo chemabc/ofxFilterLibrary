@@ -19,7 +19,7 @@ public:
     virtual void    onKeyPressed(int key);
     virtual void    onMousePressed(int button);
     virtual string  getInstructions() { return "Left and Right change edge strength: " + ofToString(_edgeStrength); }
-
+    virtual void updateParameters();
     #ifdef _APPGC_OFXSIMPLEGUITOO
     virtual void setupGui(ofxSimpleGuiToo *gui, string userGuiPage = "", bool bUsePageNameAsATitle = false, bool bLoadSettings=true);
 //    virtual void updateParameters();

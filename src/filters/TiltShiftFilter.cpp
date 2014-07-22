@@ -74,7 +74,7 @@ void TiltShiftFilter::describeParameters() {
         ofxSimpleGuiToo GUI
 ****************************************************/
 string TiltShiftFilter::getTotalHelpString() {
-    string sComplete= "TiltShift: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     sComplete += " _focusPercent: " + ofToString(_focusPercent) + "; ";
     return sComplete;

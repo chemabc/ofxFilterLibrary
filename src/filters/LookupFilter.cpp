@@ -58,7 +58,7 @@ string LookupFilter::_getFragSrc() {
 ****************************************************/
 
 string LookupFilter::getTotalHelpString() {
-    string sComplete= "LookUp: inputImageTexture2 " + s_userGuiPage + " ";
+   string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " _Active: " + ofToString(_b_activeFilter) + "; " ;
     return sComplete;
 }

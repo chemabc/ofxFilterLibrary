@@ -2,8 +2,8 @@
 //  DuoToneFilter.cpp
 //  filterSandbox
 //
-//  Created by Matthew Fargo on 2014/06/23.
-//
+//  Created by Chema Blanco 2014/07/11
+//  Based on Matthew Fargo on 2014/06/23.
 //
 
 #include "DuoToneFilter.h"
@@ -88,7 +88,7 @@ void DuoToneFilter::updateParameters(){
         ofxSimpleGuiToo GUI
 ****************************************************/
 string DuoToneFilter::getTotalHelpString() {
-    string sComplete= "DueTone: " + s_userGuiPage + " ";
+    string sComplete= _name + ": " + s_userGuiPage + " ";
     sComplete += " color0.r: " + ofToString(color0.r) + "; " ;
     sComplete += " color0.g: " + ofToString(color0.g) + "; " ;
     sComplete += " color0.b: " + ofToString(color0.b) + "; " ;
