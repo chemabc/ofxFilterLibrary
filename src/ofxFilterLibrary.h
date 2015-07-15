@@ -41,6 +41,7 @@
 #include "HSVControlFilter.h"
 #include "HSVControlFilter.h"
 #include "ThresholdAndToneFilter.h"
+#include "RemoveDimensionsFilter.h"
 
 #include "FilterChain.h"
 

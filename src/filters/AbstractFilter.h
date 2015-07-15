@@ -13,7 +13,7 @@
 
 #include "ParametricObject.h"
 
-#include "defines_main.h"
+#include "defines_main_basic.h"
 #ifdef _APPGC_OFXSIMPLEGUITOO
     #include "ofxSimpleGuiToo.h"
 #endif
